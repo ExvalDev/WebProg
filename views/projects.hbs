@@ -1,0 +1,160 @@
+    <title>Timetool - Projekte</title>
+{{!-- Body --}}
+<div class="container-fluid m-0 py-3 px-2 fillHeight bg-white rounded">
+  {{!-- Header --}}
+  <div class="d-flex">
+    <h3>Projekte</h3>
+    <button type="button" class="btn p-0 ml-auto shadow-none addBtn" data-toggle="modal" data-target="#addModal"><h3 class="mdi mdi-plus m-0"></h3></button>
+  </div>
+  {{!-- Tablearea --}}
+  <div class="table-responsive">
+    <table class="table table-sm table-fixed" id="datatable">
+      {{!-- Tablehead --}}
+      <thead>
+        <tr>
+            <th scope="col" class="col-3 col-md-3">Name</th> 
+            <th scope="col" class="col-4 col-md-4">Beschreibung</th>
+            <th scope="col" class="col-3 col-md-3">Kunden</th>
+            <th scope="col" class="col-1 col-md-1">Stundensatz</th>
+            <th scope="col" class="col-1 col-md-1">&nbsp;</th>
+        </tr>
+      </thead>
+    
+    {{!-- Tablebody --}}
+      <tbody data-simplebar> 
+        {{#each projCust}} 
+          <tr class="d-flex">
+            <td class="col-3 col-md-3 d-flex align-content-stretch">{{name}}</td>
+            <td class="col-4 col-md-4 d-flex align-content-stretch">{{description}}</td>
+            <td class="col-3 col-md-3 d-flex align-content-stretch">{{surname}} {{firstname}} </td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{moneyFix hourly_euro}}€</td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch justify-content-end">
+                <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
+                  data-id="{{ id }}" data-name="{{ name }}" data-description="{{ description }}" data-customer_id ="{{customer_id}}" data-hourly_euro="{{hourly_euro}}"></a>
+                <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
+                  data-id="{{ id }}"></a>             
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{!-- Modals --}}
+
+{{!-- Modal to add Projects --}}
+<form action="/submit-form" method="POST">
+    <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="mdi mdi-plus"> Projekt</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">      
+                    <input type="hidden" name="tablename" value="projects"/>
+                    <input class="form-control form-control mb-2" type="text" name="name" maxlength="40" placeholder="Name des Projekts" required />
+                    <input class="form-control form-control mb-2" type="text" name="description" maxlength="70" placeholder="Beschreibung" required />
+                    <select class="form-control form-control  mb-2" type="number" name="customer_id" placeholder="Kunde" required>
+                        <option disabled value="" selected hidden> Kunde wählen</option >
+                        {{#each customers}}
+                            <option value="{{this.id}}">{{this.surname}} {{this.firstname}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="form-control form-control mb-2" type="number" name="hourly_euro" min="0" maxlength="40" step="0.01" placeholder="Stundenlohn" required />
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Edit Modal-->
+<form action="/update" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Projekte bearbeiten</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control form-control mb-2 name" type="text" name="name" maxlength="40" placeholder="Name des Projekts" required />
+                    <input class="form-control form-control mb-2 description" type="text" name="description" maxlength="70" placeholder="Beschreibung" required />
+                    <select class="form-control form-control mb-2" type="number" name="customer_id" id="cusSelect" placeholder="Kunde" required>
+                        {{#each customers}}
+                            <option value="{{this.id}}">{{this.surname}} {{this.firstname}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="form-control form-control mb-2 hourly_euro" type="number" name="hourly_euro" min="0" step="0.01" placeholder="Stundenlohn" required />
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" class="id" required>
+                    <input type="hidden" name="tablename" value="projects" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Aktualisieren</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Delete Product Modal-->
+<form id="add-row-form" action="/delete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Projekt löschen</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <strong>Wollen sie wirklich dieses Projekt enfernen?</strong>
+                </div>
+                <div class="modal-footer">  
+                    <input  type="hidden" name="id" class="form-control del_id" required>
+                    <input  type="hidden" name="tablename" value="projects" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-danger">Löschen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{#section 'script'}}
+<script>
+    $(document).ready(function () {
+        //showing data to modal for edit record
+        $('#datatable').on('click', '.editBtn', function () {
+            var id = $(this).data('id');
+            var description = $(this).data('description');
+            var name = $(this).data('name');
+            var customer_id = $(this).data('customer_id');
+            var hourly_euro = $(this).data('hourly_euro');
+            $('#EditModal').modal('show');
+            $('.description').val(description);
+            $('.name').val(name);
+            $('#cusSelect').val(customer_id);
+            $('.hourly_euro').val(hourly_euro);
+            $('.id').val(id);
+        });
+        //showing modal for delete record
+        $('#datatable').on('click', '.deleteBtn', function () {
+            var id = $(this).data('id');
+            $('#DeleteModal').modal('show');
+            $('.del_id').val(id);
+        });
+    });
+</script>
+{{/section}}

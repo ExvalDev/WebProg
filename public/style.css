@@ -1,0 +1,82 @@
+/* styles */
+/* called by your view template */
+
+
+
+/* Sidenavigation */
+.vertical-nav {
+    min-width: 5rem;
+    width: 5rem;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: all 0.4s;
+  }
+/* Main Content area */
+.page-content {
+width: calc(100% - 5rem);
+height: 100vh;
+margin-left: 5rem;
+transition: all 0.4s;
+background-color: #acacac;
+overflow: hidden;
+}
+
+.fillHeight{
+  height: calc(100vh - 1.2rem);
+  max-height: calc(100vh - 1.2rem);
+
+}
+.tableHeight{
+  max-height: calc(100vh - 5rem);
+}
+
+.table-fixed tbody {
+  max-height: calc(100vh - 7.5rem);
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.table-fixed thead,
+.table-fixed tbody,
+.table-fixed tr,
+.table-fixed td,
+.table-fixed th {
+  display: block;
+}
+
+.table-fixed tbody td,
+.table-fixed tbody th,
+.table-fixed thead > tr > th {
+  float: left;
+  position: relative;
+
+  
+}
+.table-fixed tbody tr:nth-of-type(odd) td {
+  background-color: rgba(0,0,0,.05);
+}
+
+.editBtn:hover {
+  background-color: lightgreen;
+}
+.deleteBtn:hover{
+  background-color: lightsalmon;
+}
+.addBtn:hover{
+  background-color: lightgreen;
+}
+a{
+  color: white;
+}
+
+a:hover {
+  color: lightgreen;
+}
+
+/* .btn:hover{
+  background-color: lightgrey;
+  
+} */
