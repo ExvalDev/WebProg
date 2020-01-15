@@ -1,0 +1,147 @@
+    <title>Timetool - Mitarbeiter</title>
+{{!-- Body --}}
+<div class="container-fluid m-0 py-3 px-2 fillHeight bg-white rounded">
+  {{!-- Header --}}
+  <div class="d-flex">
+    <h3>Mitarbeiter</h3>
+    <button type="button" class="btn p-0 ml-auto shadow-none addBtn" data-toggle="modal" data-target="#addModal"><h3 class="mdi mdi-plus m-0"></h3></button>
+  </div>
+  {{!-- Tablearea --}}
+  <div class="table-responsive">
+    <table class="table table-sm table-fixed" id="datatable">
+      {{!-- Tablehead --}}
+      <thead>
+        <tr>
+          <th scope="col" class="col-1 col-md-1">Nr</th>
+          <th scope="col" class="col-4 col-md-3">Nachname</th>
+          <th scope="col" class="col-4 col-md-3">Vorname</th> 
+          <th scope="col" class="col-2 col-md-2">Stundenlohn</th> 
+          <th scope="col" class="col-1 col-md-3">&nbsp;</th>
+        </tr>
+      </thead>
+    
+    {{!-- Tablebody --}}
+      <tbody data-simplebar> 
+        {{#each employees}}
+          <tr class="d-flex">
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{id}}</td>
+            <td class="col-4 col-md-3 d-flex align-content-stretch">{{surname}}</td>
+            <td class="col-4 col-md-3 d-flex align-content-stretch">{{firstname}}</td>
+            <td class="col-2 col-md-2 d-flex align-content-stretch">{{moneyFix salary}}€</td>
+            <td class="col-1 col-md-3 d-flex align-content-stretch justify-content-end">
+              <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
+                  data-id="{{ id }}" data-surname="{{ surname }}" data-firstname="{{ firstname }}" data-salary="{{ salary }}"></a>
+              <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
+                  data-id="{{ id }}"></a> 
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{!-- Modals --}}
+
+{{!-- Modal to add Employee --}}
+<form action="/submit-form" method="POST">
+    <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="mdi mdi-plus"> Mitarbeiter</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">      
+                    <input type="hidden" name="tablename" value="employees"/>
+                    <input class="form-control form-control mb-2" type="text" name="surname" maxlength="40" placeholder="Nachname" required />
+                    <input class="form-control form-control mb-2" type="text" name="firstname" maxlength="40" placeholder="Vorname" required />
+                    <input class="form-control form-control" type="number" name="salary" min="0" step="0.01" placeholder="Stundenlohn" required />
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Edit Modal-->
+<form action="/update" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Mitarbeiter bearbeiten</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <input type="text" name="surname" class="form-control surname mb-2" placeholder="Nachname" required>
+                    <input type="text" name="firstname" class="form-control firstname mb-2" placeholder="Vorname" required>
+                    <input type="number" name="salary"class="form-control form-control salary" min="0" step="0.01" placeholder="Stundenlohn" required />
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" class="id" required>
+                    <input type="hidden" name="tablename" value="employees" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Aktualisieren</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Delete Product Modal-->
+<form id="add-row-form" action="/delete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Mitarbeiter löschen</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <strong>Wollen sie wirklich diesen Mitarbeiter enfernen?</strong>
+                </div>
+                <div class="modal-footer">  
+                    <input  type="hidden" name="id" class="form-control del_id" required>
+                    <input  type="hidden" name="tablename" value="employees" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-danger">Löschen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{#section 'script'}}
+<script>
+    $(document).ready(function () {
+        //showing data to modal for edit record
+        $('#datatable').on('click', '.editBtn', function () {
+            var id = $(this).data('id');
+            var surname = $(this).data('surname');
+            var firstname = $(this).data('firstname');
+            var salary = $(this).data('salary');
+            $('#EditModal').modal('show');
+            $('.surname').val(surname);
+            $('.firstname').val(firstname);
+            $('.salary').val(salary);
+            $('.id').val(id);
+        });
+        //showing modal for delete record
+        $('#datatable').on('click', '.deleteBtn', function () {
+            var id = $(this).data('id');
+            $('#DeleteModal').modal('show');
+            $('.del_id').val(id);
+        });
+    });
+</script>
+{{/section}}

@@ -1,0 +1,204 @@
+    <title>Timetool - Zeiterfassung</title>
+{{!-- Body --}}
+<div class="container-fluid m-0 py-3 px-2 fillHeight bg-white rounded">
+  {{!-- Header --}}
+  <div class="d-flex">
+    <h3>Zeiterfassung</h3>
+    <button type="button" class="btn p-0 ml-auto shadow-none addBtn" data-toggle="modal" data-target="#addModal"><h3 class="mdi mdi-plus m-0"></h3></button>
+  </div>
+  {{!-- Tablearea --}}
+  <div class="table-responsive">
+    <table class="table table-sm table-fixed" id="datatable">
+      {{!-- Tablehead --}}
+      <thead>
+        <tr>
+            <th scope="col" class="col-1 col-md-1">Datum</th>
+            <th scope="col" class="col-1 col-md-1">Startzeit</th> 
+            <th scope="col" class="col-1 col-md-1">Endzeit</th>
+            <th scope="col" class="col-1 col-md-1">Differenz</th>
+            <th scope="col" class="col-2 col-md-2">Projekt</th>
+            <th scope="col" class="col-2 col-md-2">Arbeitsschritt</th>
+            <th scope="col" class="col-2 col-md-2">Arbeiter</th>
+            <th scope="col" class="col-1 col-md-1">Abrechnungsart</th>
+            <th scope="col" class="col-1 col-md-1">&nbsp;</th>
+        </tr>
+      </thead>
+    
+    {{!-- Tablebody --}}
+      <tbody data-simplebar> 
+        {{#each timelogs}} 
+          <tr class="d-flex">
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{date}}</td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{start_time}}</td> 
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{end_time}}</td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{recordedTime start_time end_time}}</td>
+            <td class="col-2 col-md-2 d-flex align-content-stretch">{{name}}</td>
+            <td class="col-2 col-md-2 d-flex align-content-stretch">{{work_step}}</td>
+            <td class="col-2 col-md-2 d-flex align-content-stretch">{{surname}} {{firstname}}</td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch">{{types}}</td>
+            <td class="col-1 col-md-1 d-flex align-content-stretch justify-content-end">
+                <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
+                    data-id="{{ id }}"
+                    data-date="{{ date }}" 
+                    data-start_time="{{ start_time }}"
+                    data-end_time="{{ end_time }}"
+                    data-project_id ="{{project_id}}"  
+                    data-employee_id ="{{employee_id}}" 
+                    data-work_step="{{work_step}}"
+                    data-types="{{types}}"></a>
+                <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
+                  data-id="{{ id }}"></a>             
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{{!-- Modals --}}
+
+{{!-- Modal to add Timelog --}}
+<form action="/submit-form" method="POST">
+    <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="mdi mdi-plus"> Zeit erfassen</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="tablename" value="timelogs"/>
+                    <input class="form-control mb-2" type="date" name="date" placeholder="Datum" required />
+                    <input class="form-control mb-2" type="time" name="start_time" id="start_inp" placeholder="Startzeit" onchange="document.getElementById('end_inp').min=this.value;" required />
+                    <input class="form-control mb-2" type="time" name="end_time" id="end_inp"  placeholder="Endzeit" min="document.getElementById('start_inp').value" required/>
+                    <select class="form-control mb-2" type="number" min="0" name="project_id" placeholder="Projekt">
+                        <option disabled value="" selected hidden> Projekt wählen</option >
+                        {{#each projects}}
+                            <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="form-control mb-2" type="text" name="work_step" placeholder="Arbeitsschritt" required/>
+                    <select class="form-control mb-2" type="number" name="employee_id" placeholder="Arbeiter">
+                        <option disabled value="" selected hidden> Mitarbeiter wählen</option >
+                        {{#each employees}}
+                            <option value="{{id}}">{{surname}} {{firstname}}</option>
+                        {{/each}}
+                    </select>
+                    <select class="form-control mb-2" type="text" name="types">
+                        <option disabled value="" selected hidden>Abrechnungsart wählen</option >
+                        <option>Arbeitszeit</option>
+                        <option>Fahrtzeit</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Speichern</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Edit Modal-->
+<form action="/update" method="post">
+    <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Eintrag bearbeiten</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <input class="form-control mb-2 date" type="date" name="date" placeholder="Datum" required />
+                    <input class="form-control mb-2 start_time" type="time" name="start_time" id="edit_start_inp" placeholder="Startzeit" onchange="document.getElementById('edit_end_inp').min=this.value;" required />
+                    <input class="form-control mb-2 end_time" type="time" name="end_time" id="edit_end_inp" placeholder="Endzeit" min="document.getElementById('edit_start_inp').value" required/>
+                    <select class="form-control mb-2" type="number" min="0" name="project_id" id="projSelect" placeholder="Projekt">
+                        {{#each projects}}
+                            <option value="{{id}}">{{name}}</option>
+                        {{/each}}
+                    </select>
+                    <input class="form-control mb-2 work_step" type="text" name="work_step" placeholder="Arbeitsschritt" required/>
+                    <select class="form-control mb-2" type="number" name="employee_id" id="empSelect" placeholder="Arbeiter">
+                        {{#each employees}}
+                            <option value="{{id}}">{{surname}} {{firstname}}</option>
+                        {{/each}}
+                    </select>
+                    <select class="form-control mb-2 types" type="text" name="types">
+                        <option>Arbeitszeit</option>
+                        <option>Fahrtzeit</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="id" class="id" required>
+                    <input type="hidden" name="tablename" value="timelogs" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-success">Aktualisieren</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- Delete Product Modal-->
+<form id="add-row-form" action="/delete" method="post">
+    <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Eintrag löschen</h3>
+                    <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
+                </div>
+                <div class="modal-body">
+                    <strong>Wollen sie wirklich diesen Eintrag enfernen?</strong>
+                </div>
+                <div class="modal-footer">  
+                    <input  type="hidden" name="id" class="form-control del_id" required>
+                    <input  type="hidden" name="tablename" value="timelogs" required>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="submit" class="btn btn-danger">Löschen</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+{{#section 'script'}}
+<script>
+    $(document).ready(function () {
+        //showing data to modal for edit record
+        $('#datatable').on('click', '.editBtn', function () {
+
+            var id = $(this).data('id');
+            var date = $(this).data('date');
+            var start_time = $(this).data('start_time');
+            var end_time = $(this).data('end_time');
+            var project_id = $(this).data('project_id');
+            var employee_id = $(this).data('employee_id');
+            var work_step = $(this).data('work_step');
+            var types = $(this).data('types');
+            $('#EditModal').modal('show');
+            $('.date').val(date);
+            $('.start_time').val(start_time);
+            $('.end_time').val(end_time);
+            $('#projSelect').val(project_id);
+            $('#empSelect').val(employee_id);
+            $('.work_step').val(work_step);
+            $('.types').val(types);
+            $('.id').val(id);
+        });
+        //showing modal for delete record
+        $('#datatable').on('click', '.deleteBtn', function () {
+            var id = $(this).data('id');
+            $('#DeleteModal').modal('show');
+            $('.del_id').val(id);
+        });
+    });
+</script>
+{{/section}}
