@@ -5,16 +5,17 @@ const dbExists = fs.existsSync(dbPath);
 const db = new sqlite.Database(dbPath);
 
 if (!dbExists) {
-
   db.run(`
     CREATE TABLE customers(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      company TEXT NOT NULL,
       firstname TEXT NOT NULL,
       surname TEXT NOT NULL,
       zipcode INTEGER NOT NULL,
       city TEXT NOT NULL,
       street TEXT NOT NULL,
-      housenum INTEGERT NOT NULL
+      housenum INTEGERT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     )
 `);
 
@@ -23,7 +24,8 @@ if (!dbExists) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       firstname TEXT NOT NULL,
       surname TEXT NOT NULL,
-      salary INTEGER NOT NULL
+      salary INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     )
 `);
 
@@ -34,13 +36,14 @@ if (!dbExists) {
       description TEXT NOT NULL,
       customer_id INTEGER NOT NULL,
       hourly_euro INTEGER NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
       FOREIGN KEY (customer_id)
        REFERENCES customers (id)
        ON UPDATE RESTRICT
        ON DELETE RESTRICT 
     )
 `);
-  
+
   db.run(`
     CREATE TABLE timelogs(
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -61,8 +64,6 @@ if (!dbExists) {
        ON DELETE RESTRICT  
     )
 `);
-  
 }
-
 
 module.exports = db;

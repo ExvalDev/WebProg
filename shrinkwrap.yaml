@@ -5,7 +5,6 @@ dependencies:
   express-handlebars: 3.1.0
   handlebars-helpers: 0.10.0
   jsdoc: 3.6.3
-  md5: 2.2.1
   sqlite3: 4.1.1
 packages:
   /@babel/parser/7.7.5:
@@ -511,10 +510,6 @@ packages:
       node: '>= 8'
     resolution:
       integrity: sha512-a+xUyMV7hD1BrDQA/3iPV7oc+6W26BgVJO05PGEoatMyIuPScQKsde6i3YorWX1qs+AZjnJ18NqdKoCtKiNh1g==
-  /charenc/0.0.2:
-    dev: false
-    resolution:
-      integrity: sha1-wKHS86cJLgN3S/qD8UwPxXkKhmc=
   /chownr/1.1.3:
     dev: false
     resolution:
@@ -621,10 +616,6 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha1-i5XyaR4ySbYIBEPjPQutn49pdao=
-  /crypt/0.0.2:
-    dev: false
-    resolution:
-      integrity: sha1-iNf/fsDfuG9xPch7u0LQRNPmxBs=
   /dashdash/1.14.1:
     dependencies:
       assert-plus: 1.0.0
@@ -1701,14 +1692,6 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-c+yYdCZJQrsRjTPhUx7VKkApw9bwDkNbHUKo1ovgcfDjb2kc8rLuRbIFyXL5WOEUwzSSKo3IXpph2K6DqB/KZg==
-  /md5/2.2.1:
-    dependencies:
-      charenc: 0.0.2
-      crypt: 0.0.2
-      is-buffer: 1.1.6
-    dev: false
-    resolution:
-      integrity: sha1-U6s41f48iJG6RlMp6iP6wFQBJvk=
   /mdurl/1.0.1:
     dev: false
     resolution:
@@ -2751,5 +2734,4 @@ specifiers:
   express-handlebars: ^3.1.0
   handlebars-helpers: ^0.10.0
   jsdoc: ^3.6.3
-  md5: ^2.2.1
   sqlite3: ^4.1.1

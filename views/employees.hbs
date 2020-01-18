@@ -12,11 +12,11 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-          <th scope="col" class="col-1 col-md-1">Nr</th>
-          <th scope="col" class="col-4 col-md-3">Nachname</th>
-          <th scope="col" class="col-4 col-md-3">Vorname</th> 
-          <th scope="col" class="col-2 col-md-2">Stundenlohn</th> 
-          <th scope="col" class="col-1 col-md-3">&nbsp;</th>
+          <th scope="col" class="col-1">Nr</th>
+          <th scope="col" class="col-3">Nachname</th>
+          <th scope="col" class="col-4">Vorname</th> 
+          <th scope="col" class="col-2">Stundenlohn</th> 
+          <th scope="col" class="col-2">Erstellt</th>
         </tr>
       </thead>
     
@@ -24,11 +24,13 @@
       <tbody data-simplebar> 
         {{#each employees}}
           <tr class="d-flex">
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{id}}</td>
-            <td class="col-4 col-md-3 d-flex align-content-stretch">{{surname}}</td>
-            <td class="col-4 col-md-3 d-flex align-content-stretch">{{firstname}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{moneyFix salary}}€</td>
-            <td class="col-1 col-md-3 d-flex align-content-stretch justify-content-end">
+            
+            <td class="col-1 d-flex align-content-stretch">{{id}}</td>
+            <td class="col-3 d-flex align-content-stretch">{{surname}}</td>
+            <td class="col-4 d-flex align-content-stretch">{{firstname}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{moneyFix salary}}€</td>
+            <td class="col-1 d-flex align-content-stretch">{{dateFix created_at}}</td>
+            <td class="col-1 d-flex align-content-stretch justify-content-end">
               <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
                   data-id="{{ id }}" data-surname="{{ surname }}" data-firstname="{{ firstname }}" data-salary="{{ salary }}"></a>
               <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
@@ -43,7 +45,7 @@
 
 {{!-- Modals --}}
 
-{{!-- Modal to add Employee --}}
+{{!-- add Employee --}}
 <form action="/submit-form" method="POST">
     <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -52,15 +54,15 @@
                     <h3 class="mdi mdi-plus"> Mitarbeiter</h3>
                     <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
                 </div>
-                <div class="modal-body">      
-                    <input type="hidden" name="tablename" value="employees"/>
-                    <input class="form-control form-control mb-2" type="text" name="surname" maxlength="40" placeholder="Nachname" required />
-                    <input class="form-control form-control mb-2" type="text" name="firstname" maxlength="40" placeholder="Vorname" required />
-                    <input class="form-control form-control" type="number" name="salary" min="0" step="0.01" placeholder="Stundenlohn" required />
+                <div class="modal-body">
+                    <input type="hidden" name="tablename" value="employees" />
+                    <input class="form-control mb-2" type="text" name="surname" maxlength="40" placeholder="Nachname" required />
+                    <input class="form-control mb-2" type="text" name="firstname" maxlength="40" placeholder="Vorname" required />
+                    <input class="form-control" type="number" name="salary" min="0" step="0.01" placeholder="Stundenlohn" required />
                 </div>
                 <div class="modal-footer">
                     <div class="btn-group">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button> 
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Abbrechen</button>
                         <button type="submit" class="btn btn-success">Speichern</button>
                     </div>
                 </div>
@@ -69,7 +71,7 @@
     </div>
 </form>
 
-<!-- Edit Modal-->
+{{!-- edit Employee --}}
 <form action="/update" method="post">
     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -79,9 +81,9 @@
                     <h3 class="close mdi mdi-close m-0 p-1" data-dismiss="modal"></h3>
                 </div>
                 <div class="modal-body">
-                    <input type="text" name="surname" class="form-control surname mb-2" placeholder="Nachname" required>
-                    <input type="text" name="firstname" class="form-control firstname mb-2" placeholder="Vorname" required>
-                    <input type="number" name="salary"class="form-control form-control salary" min="0" step="0.01" placeholder="Stundenlohn" required />
+                    <input type="text" name="surname" class="form-control surname mb-2" placeholder="Nachname" required />
+                    <input type="text" name="firstname" class="form-control firstname mb-2" placeholder="Vorname" required />
+                    <input type="number" name="salary" class="form-control salary" min="0" step="0.01" placeholder="Stundenlohn" required />
                 </div>
                 <div class="modal-footer">
                     <input type="hidden" name="id" class="id" required>
@@ -96,7 +98,7 @@
     </div>
 </form>
 
-<!-- Delete Product Modal-->
+{{!-- delete Employee --}}
 <form id="add-row-form" action="/delete" method="post">
     <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -127,10 +129,12 @@
         //showing data to modal for edit record
         $('#datatable').on('click', '.editBtn', function () {
             var id = $(this).data('id');
+            var salutation = $(this).data('salutation');
             var surname = $(this).data('surname');
             var firstname = $(this).data('firstname');
             var salary = $(this).data('salary');
             $('#EditModal').modal('show');
+            $('.salutation').val(salutation);
             $('.surname').val(surname);
             $('.firstname').val(firstname);
             $('.salary').val(salary);

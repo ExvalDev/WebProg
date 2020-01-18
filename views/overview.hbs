@@ -4,10 +4,10 @@
   {{!-- Header --}}
   <div class="d-flex mb-2">
     <h3>Auswertung</h3>
-    <div class="btn-group ml-auto">
-      <button  class="btn btn-outline-secondary active" id="activeProject" onclick="changeTable('project')">Projekte</button> 
-      <button  class="btn btn-outline-secondary" id="activeCustomer" onclick="changeTable('customer')">Kunden</button>
-      <button  class="btn btn-outline-secondary" id="activeEmployee" onclick="changeTable('employee')">Mitarbeiter</button>
+    <div class="btn-group ml-auto shadow-none">
+      <button  class="btn btn-outline-secondary active shadow-none" id="activeProject" onclick="changeTable('project')">Projekte</button> 
+      <button  class="btn btn-outline-secondary shadow-none" id="activeCustomer" onclick="changeTable('customer')">Kunden</button>
+      <button  class="btn btn-outline-secondary shadow-none" id="activeEmployee" onclick="changeTable('employee')">Mitarbeiter</button>
     </div>
   </div>
 
@@ -18,14 +18,13 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-            <th scope="col" class="col-2 col-md-2">Projektname</th> 
-            <th scope="col" class="col-3 col-md-2">Kunde</th>
-            <th scope="col" class="col-4 col-md-3">Beschreibung</th>
-            <th scope="col" class="col-1 col-md-1">Stundensatz</th>
-            <th scope="col" class="col-2 col-md-1">Fahrtzeit</th>
-            <th scope="col" class="col-2 col-md-1">Arbeitszeit</th>
-            <th scope="col" class="col-2 col-md-1">Gesamtzeit</th>
-            <th scope="col" class="col-1 col-md-1">Gesamtkosten</th>
+            <th scope="col" class="col-3">Projektname</th> 
+            <th scope="col" class="col-4">Kunde</th>
+            <th scope="col" class="col-1">Stundensatz</th>
+            <th scope="col" class="col-1">Fahrtzeit</th>
+            <th scope="col" class="col-1">Arbeitszeit</th>
+            <th scope="col" class="col-1">Gesamtzeit</th>
+            <th scope="col" class="col-1">Gesamtkosten</th>
         </tr>
       </thead>
     
@@ -33,15 +32,14 @@
       <tbody data-simplebar> 
         {{#each projCust}} 
           <tr class="d-flex">
-            <td class="col-3 col-md-2 d-flex align-content-stretch">{{name}}</td>
-            <td class="col-3 col-md-2 d-flex align-content-stretch">{{surname}} {{firstname}} </td>
-            <td class="col-4 col-md-3 d-flex align-content-stretch">{{description}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{moneyFix hourly_euro}}€</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "Fahrtzeit"}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "Arbeitszeit"}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "all"}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{eval_projects_money id hourly_euro ../timelogs}}</td>
-          </tr>
+            <td class="col-3 d-flex align-content-stretch">{{name}}</td>
+            <td class="col-4 d-flex align-content-stretch">{{companyFix company}} {{surname}} {{firstname}} </td>
+            <td class="col-1 d-flex align-content-stretch">{{moneyFix hourly_euro}}€</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "Fahrtzeit"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "Arbeitszeit"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_projects_time id ../timelogs "all"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_projects_money id hourly_euro ../timelogs}}</td>
+        </tr>
         {{/each}}
       </tbody>
     </table>
@@ -53,15 +51,12 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-            <th scope="col" class="col-2 col-md-2">Nachname</th>
-            <th scope="col" class="col-2 col-md-2">Vorname</th> 
-            <th scope="col" class="col-2 col-md-1">Straße</th>
-            <th scope="col" class="col-1 col-md-1">Hausnr.</th>
-            <th scope="col" class="col-1 col-md-1">PLZ</th>
-            <th scope="col" class="col-2 col-md-2">Stadt</th>
-            <th scope="col" class="col-2 col-md-1">Projekte</th>
-           <th scope="col" class="col-2 col-md-1">Gesamtzeit</th>
-           <th scope="col" class="col-2 col-md-1">Gesamtkosten</th>
+            <th scope="col" class="col-3">Firma</th>
+            <th scope="col" class="col-2">Nachname</th>
+            <th scope="col" class="col-4">Vorname</th> 
+            <th scope="col" class="col-1">Projekte</th>
+           <th scope="col" class="col-1">Gesamtzeit</th>
+           <th scope="col" class="col-1">Gesamtkosten</th>
         </tr>
       </thead>
     
@@ -69,15 +64,12 @@
       <tbody data-simplebar> 
         {{#each customers}}
           <tr class="d-flex">
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{surname}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{firstname}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{street}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{housenum}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{zipcode}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{city}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{count_projects_customer id ../projects}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{eval_customer_time id ../timelogs ../projects}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{eval_customer_money id ../projects ../timelogs}}</td>
+            <td class="col-3 d-flex align-content-stretch">{{textFix company}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{surname}}</td>
+            <td class="col-4 d-flex align-content-stretch">{{firstname}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{count_projects_customer id ../projects}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_customer_time id ../timelogs ../projects}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{eval_customer_money id ../projects ../timelogs}}</td>
           </tr>
         {{/each}}
       </tbody>
@@ -91,15 +83,14 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-          <th scope="col" class="col-4 col-md-2">Nachname</th>
-          <th scope="col" class="col-4 col-md-4">Vorname</th> 
-            <th scope="col" class="col-1 col-md-1">Stundensatz</th>
-           <th scope="col" class="col-1 col-md-1">Projekte</th>
-          
-            <th scope="col" class="col-2 col-md-1">Fahrtzeit</th>
-            <th scope="col" class="col-2 col-md-1">Arbeitszeit</th>
-            <th scope="col" class="col-2 col-md-1">Gesamtzeit</th>
-            <th scope="col" class="col-1 col-md-1">Lohnkosten</th>
+          <th scope="col" class="col-2">Nachname</th>
+          <th scope="col" class="col-4">Vorname</th> 
+          <th scope="col" class="col-1">Stundenlohn</th>
+          <th scope="col" class="col-1">Projekte</th>  
+          <th scope="col" class="col-1">Fahrtzeit</th>
+          <th scope="col" class="col-1">Arbeitszeit</th>
+          <th scope="col" class="col-1">Gesamtzeit</th>
+          <th scope="col" class="col-1">Lohnkosten</th>
         </tr>
       </thead>
     
@@ -107,21 +98,14 @@
       <tbody data-simplebar> 
         {{#each employees}}
           <tr class="d-flex">
-            <td class="col-4 col-md-2 d-flex align-content-stretch">{{surname}}</td>
-            <td class="col-4 col-md-4 d-flex align-content-stretch">{{firstname}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{moneyFix salary}}€</td>
-            <td class="col-4 col-md-1 d-flex align-content-stretch">{{count_employee_projects id ../timelogs ../projects}}</td>
-            
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "Fahrtzeit"}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "Arbeitszeit"}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "all"}}</td>
-            <td class="col-2 col-md-1 d-flex align-content-stretch">{{eval_employee_money id salary ../timelogs}}</td>
-            <td class="col-1 col-md-3 d-flex align-content-stretch justify-content-end">
-              <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
-                  data-id="{{ id }}" data-surname="{{ surname }}" data-firstname="{{ firstname }}"></a>
-              <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
-                  data-id="{{ id }}"></a> 
-            </td>
+            <td class="col-2 d-flex align-content-stretch">{{surname}}</td>
+            <td class="col-4 d-flex align-content-stretch">{{firstname}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{moneyFix salary}}€</td>
+            <td class="col-1 d-flex align-content-stretch">{{count_employee_projects id ../timelogs ../projects}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "Fahrtzeit"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "Arbeitszeit"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_employee_time id ../timelogs "all"}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{eval_employee_money id salary ../timelogs}}</td>
           </tr>
         {{/each}}
       </tbody>

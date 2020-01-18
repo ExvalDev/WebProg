@@ -12,11 +12,13 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-            <th scope="col" class="col-3 col-md-3">Name</th> 
-            <th scope="col" class="col-4 col-md-4">Beschreibung</th>
-            <th scope="col" class="col-3 col-md-3">Kunden</th>
-            <th scope="col" class="col-1 col-md-1">Stundensatz</th>
-            <th scope="col" class="col-1 col-md-1">&nbsp;</th>
+            <th scope="col" class="col-3">Name</th> 
+            <th scope="col" class="col-4">Beschreibung</th>
+            <th scope="col" class="col-2">Kunde</th>
+            <th scope="col" class="col-1">Stundensatz</th>
+            <th scope="col" class="col-2">Erstellt</th>
+          
+            
         </tr>
       </thead>
     
@@ -24,11 +26,12 @@
       <tbody data-simplebar> 
         {{#each projCust}} 
           <tr class="d-flex">
-            <td class="col-3 col-md-3 d-flex align-content-stretch">{{name}}</td>
-            <td class="col-4 col-md-4 d-flex align-content-stretch">{{description}}</td>
-            <td class="col-3 col-md-3 d-flex align-content-stretch">{{surname}} {{firstname}} </td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{moneyFix hourly_euro}}€</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch justify-content-end">
+            <td class="col-3 d-flex align-content-stretch">{{name}}</td>
+            <td class="col-4 d-flex align-content-stretch">{{description}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{companyFix company}} {{surname}} {{firstname}} </td>
+            <td class="col-1 d-flex align-content-stretch">{{moneyFix hourly_euro}}€</td>
+            <td class="col-1 d-flex align-content-stretch">{{dateFix created_at}}</td>
+            <td class="col-1 d-flex align-content-stretch justify-content-end">
                 <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
                   data-id="{{ id }}" data-name="{{ name }}" data-description="{{ description }}" data-customer_id ="{{customer_id}}" data-hourly_euro="{{hourly_euro}}"></a>
                 <a href="javascript:void(0);" class="btn mdi mdi-delete-outline py-0 shadow-none deleteBtn" 
@@ -43,7 +46,7 @@
 
 {{!-- Modals --}}
 
-{{!-- Modal to add Projects --}}
+{{!-- add Projects --}}
 <form action="/submit-form" method="POST">
     <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -59,7 +62,7 @@
                     <select class="form-control form-control  mb-2" type="number" name="customer_id" placeholder="Kunde" required>
                         <option disabled value="" selected hidden> Kunde wählen</option >
                         {{#each customers}}
-                            <option value="{{this.id}}">{{this.surname}} {{this.firstname}}</option>
+                            <option value="{{this.id}}">{{companyFix company}} {{this.surname}} {{this.firstname}}</option>
                         {{/each}}
                     </select>
                     <input class="form-control form-control mb-2" type="number" name="hourly_euro" min="0" maxlength="40" step="0.01" placeholder="Stundenlohn" required />
@@ -75,7 +78,7 @@
     </div>
 </form>
 
-<!-- Edit Modal-->
+{{!-- edit Projects --}}
 <form action="/update" method="post">
     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -89,7 +92,7 @@
                     <input class="form-control form-control mb-2 description" type="text" name="description" maxlength="70" placeholder="Beschreibung" required />
                     <select class="form-control form-control mb-2" type="number" name="customer_id" id="cusSelect" placeholder="Kunde" required>
                         {{#each customers}}
-                            <option value="{{this.id}}">{{this.surname}} {{this.firstname}}</option>
+                            <option value="{{this.id}}">{{companyFix company}} {{this.surname}} {{this.firstname}}</option>
                         {{/each}}
                     </select>
                     <input class="form-control form-control mb-2 hourly_euro" type="number" name="hourly_euro" min="0" step="0.01" placeholder="Stundenlohn" required />
@@ -107,7 +110,7 @@
     </div>
 </form>
 
-<!-- Delete Product Modal-->
+{{!-- delete Projects --}}
 <form id="add-row-form" action="/delete" method="post">
     <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">

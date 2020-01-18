@@ -33,8 +33,8 @@ Web routes
 @URL 
 */
 
-app.get('/home', async (req, res) => {
-  res.render('home');
+app.get('/fakedata', async (req, res) => {
+  res.render('fakedata');
 });
 
 app.get('/', async (req, res) => {
@@ -42,7 +42,7 @@ app.get('/', async (req, res) => {
   const timelogs = await dbapi.getAll('timelogs'); 
   const projCust = await dbapi.getProjectCustomers();
   const projects = await dbapi.getAll('projects');
-  const employees = await dbapi.getAll('employees');
+  const employees = await dbapi.orderby('id','employees');
   
   res.render('overview',{
     projCust: projCust,
@@ -61,7 +61,7 @@ app.get('/customers', async (req, res) => {
 });
 
 app.get('/projects', async (req, res) => {
-  const customers = await dbapi.getAll('customers'); 
+  const customers = await dbapi.orderby('surname','customers'); 
   const projCust = await dbapi.getProjectCustomers();
   res.render('projects',{
     projCust: projCust,
@@ -70,7 +70,7 @@ app.get('/projects', async (req, res) => {
 });
 
 app.get('/employees', async (req, res) => {
-  const employees = await dbapi.getAll('employees');
+  const employees = await dbapi.orderby('id','employees');
   res.render('employees',{
     employees: employees
   });
@@ -79,7 +79,7 @@ app.get('/employees', async (req, res) => {
 app.get('/timelogs', async (req, res) => {
     const timelogs = await dbapi.getCompleteTimelogs();
     const employees = await dbapi.orderby('surname','employees');
-    const projects = await dbapi.orderby('customer_id','projects');
+    const projects = await dbapi.orderby('name','projects');
     res.render('timelogs',{
       timelogs: timelogs, employees: employees, projects: projects
     });
@@ -87,10 +87,11 @@ app.get('/timelogs', async (req, res) => {
 
 
 
-/*
-Web formes post
-@URL 
-*/
+/**
+ * Web formes post
+ * @URL 
+ */
+
 app.post('/submit-form', async (req, res) => {
   await dbapi.create(req.body,req.body.tablename);
   res.status(201).redirect(`/${req.body.tablename}`);
@@ -107,7 +108,10 @@ app.post('/delete', async (req, res) => {
   delAnswer = await dbapi.delete(req.body.id, req.body.tablename);
   console.log(delAnswer);
   if(delAnswer == 'failed'){
-    res.sendStatus(409);
+    res.status(409).render('delFailed',{
+      id: req.body.id,
+      tablename: req.body.tablename
+    });
   }else{
     res.status(204).redirect(`/${req.body.tablename}`);
   }
@@ -116,8 +120,8 @@ app.post('/delete', async (req, res) => {
   
 });
 
-app.post("/fakeData", async (req, res) => {
-  await dbapi.fakeData();
+app.post("/testdata", async (req, res) => {
+  await dbapi.fatestdata();
   res.status(201).redirect(`/`);
 });
 

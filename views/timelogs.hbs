@@ -12,15 +12,14 @@
       {{!-- Tablehead --}}
       <thead>
         <tr>
-            <th scope="col" class="col-1 col-md-1">Datum</th>
-            <th scope="col" class="col-1 col-md-1">Startzeit</th> 
-            <th scope="col" class="col-1 col-md-1">Endzeit</th>
-            <th scope="col" class="col-1 col-md-1">Differenz</th>
-            <th scope="col" class="col-2 col-md-2">Projekt</th>
-            <th scope="col" class="col-2 col-md-2">Arbeitsschritt</th>
-            <th scope="col" class="col-2 col-md-2">Arbeiter</th>
-            <th scope="col" class="col-1 col-md-1">Abrechnungsart</th>
-            <th scope="col" class="col-1 col-md-1">&nbsp;</th>
+            <th scope="col" class="col-1">Datum</th>
+            <th scope="col" class="col-1">Startzeit</th> 
+            <th scope="col" class="col-1">Endzeit</th>
+            <th scope="col" class="col-1">Differenz</th>
+            <th scope="col" class="col-2">Projekt</th>
+            <th scope="col" class="col-2">Arbeitsschritt</th>
+            <th scope="col" class="col-2">Arbeiter</th>
+            <th scope="col" class="col-2">Abrechnungsart</th>
         </tr>
       </thead>
     
@@ -28,15 +27,15 @@
       <tbody data-simplebar> 
         {{#each timelogs}} 
           <tr class="d-flex">
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{date}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{start_time}}</td> 
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{end_time}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{recordedTime start_time end_time}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{name}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{work_step}}</td>
-            <td class="col-2 col-md-2 d-flex align-content-stretch">{{surname}} {{firstname}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch">{{types}}</td>
-            <td class="col-1 col-md-1 d-flex align-content-stretch justify-content-end">
+            <td class="col-1 d-flex align-content-stretch">{{dateFix date}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{start_time}}</td> 
+            <td class="col-1 d-flex align-content-stretch">{{end_time}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{recordedTime start_time end_time}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{name}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{work_step}}</td>
+            <td class="col-2 d-flex align-content-stretch">{{surname}} {{firstname}}</td>
+            <td class="col-1 d-flex align-content-stretch">{{types}}</td>
+            <td class="col-1 d-flex align-content-stretch justify-content-end">
                 <a href="javascript:void(0);" class="btn mdi mdi-pencil-outline py-0 shadow-none editBtn"  
                     data-id="{{ id }}"
                     data-date="{{ date }}" 
@@ -58,7 +57,7 @@
 
 {{!-- Modals --}}
 
-{{!-- Modal to add Timelog --}}
+{{!--add Timelog --}}
 <form action="/submit-form" method="POST">
     <div id="addModal" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -102,7 +101,7 @@
     </div>
 </form>
 
-<!-- Edit Modal-->
+{{!--edit Timelog --}}
 <form action="/update" method="post">
     <div class="modal fade" id="EditModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
@@ -144,7 +143,7 @@
     </div>
 </form>
 
-<!-- Delete Product Modal-->
+{{!--delete Timelog --}}
 <form id="add-row-form" action="/delete" method="post">
     <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog">
         <div class="modal-dialog">
